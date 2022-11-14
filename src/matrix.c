@@ -75,6 +75,30 @@ void Matrix_gen(int row, int column, MATRIX_TYPE data[row * column], Matrix *_ma
     }
 }
 #if 0
+/*Full*/
+Matrix* M_full(Matrix* _mat, int row_up, int row_down, int column_left, int column_right, MATRIX_TYPE full_data) {
+    Matrix* mat_result = NULL;
+    mat_result = (Matrix*)malloc(sizeof(Matrix));
+    mat_result->row = (_mat->row + row_up + row_down);
+    mat_result->column = (_mat->column + column_left + column_right);
+    mat_result->data = GetMemory(mat_result->row,mat_result->column);
+    int i, j;
+    for (i = 0; i < mat_result->row; i++) {
+        for (j = 0; j < mat_result->column; j++) {
+            if ((i >= row_up) && (i < (row_up + _mat->row))) {
+                if ((j >= column_left) && (j < (column_left + _mat->column))) {
+                    mat_result->data[i][j] = _mat->data[i -row_up][j - column_left];
+                } else {
+                    mat_result->data[i][j] = full_data;
+                }
+            } else {
+                mat_result->data[i][j] = full_data;
+            }
+        }
+    }
+    return mat_result;
+}
+
 /* Copy Mtrix(gen new one)*/
 Matrix* Matrix_copy(Matrix* _mat_sourse) {
     int row = _mat_sourse->row;
@@ -157,29 +181,6 @@ Matrix* M_Cut(Matrix* _mat, int row_head, int row_tail, int column_head, int col
                 for (j = 0; j < (column_tail - column_head); j++) {
                     mat_result->data[i][j] = _mat->data[i+row_head][j+column_head];
                 }
-            }
-        }
-    }
-    return mat_result;
-}
-/*Full*/
-Matrix* M_full(Matrix* _mat, int row_up, int row_down, int column_left, int column_right, MATRIX_TYPE full_data) {
-    Matrix* mat_result = NULL;
-    mat_result = (Matrix*)malloc(sizeof(Matrix));
-    mat_result->row = (_mat->row + row_up + row_down);
-    mat_result->column = (_mat->column + column_left + column_right);
-    mat_result->data = GetMemory(mat_result->row,mat_result->column);
-    int i, j;
-    for (i = 0; i < mat_result->row; i++) {
-        for (j = 0; j < mat_result->column; j++) {
-            if ((i >= row_up) && (i < (row_up + _mat->row))) {
-                if ((j >= column_left) && (j < (column_left + _mat->column))) {
-                    mat_result->data[i][j] = _mat->data[i -row_up][j - column_left];
-                } else {
-                    mat_result->data[i][j] = full_data;
-                }
-            } else {
-                mat_result->data[i][j] = full_data;
             }
         }
     }

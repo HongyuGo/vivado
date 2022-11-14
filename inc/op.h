@@ -8,6 +8,6 @@
 #include <math.h>
 #include <ap_cint.h>
 
-#define Test_len 5
+#define Test_len 10
 
-void op(int ChannelBits[Test_len], int output[Test_len]);
+void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10]);
