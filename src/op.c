@@ -27,10 +27,6 @@ void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10])
     			test_data[i] = ChannelBits[i];
     		}
 
-    		//user_data[0].data = &memory_row[0];
-//    		Matrix_gen(1,Test_len,test_data,&user_data[0]);
-    		//Matrix_gen(1,Test_len,test_data,&user_data[0],&memory_row[0]);
-
     		//生成tempInputPad一维数组
     		//MATRIX_TYPE *memory_row_tempInputPad;
     		MATRIX_TYPE memory_data_tempInputPad[1][Test_len + 1];
@@ -43,7 +39,6 @@ void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10])
     		//生成codedwords一维数组
     		//MATRIX_TYPE *memory_row_codedwords;
     		MATRIX_TYPE memory_data_codewords[1][Test_len + 1];
-    		//memory_row_codedwords = &memory_data_codewords[0][0];
     		memory_data_codewords[0][0] = 0.0;
     		for(i = 0; i < Test_len + 1; i++){
     			memory_data_codewords[0][i] = memory_data_tempInputPad[0][i];
@@ -61,14 +56,19 @@ void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10])
     		for(i = KWinLen; i < codedlen + KWinLen; i++){
     			memory_data_ak[0][i] = memory_data_codewords[0][i - KWinLen];
     		}
-    		for(i = 0; i < codedlen + KWinLen; i++){
-    			memory_data_ak[0][i] = memory_data_ak[0][i] * 2.0 - 1.0;
-    		}
+    		M_nummul(1,Test_len + 2,memory_data_ak,2.0);
+    		M_numsub(1,Test_len + 2,memory_data_ak,1.0);
+
+
+    		MATRIX_TYPE memory_data_dk[1][Test_len + 1];
+    		M_Transition(1,Test_len + 1,memory_data_ak,memory_data_dk);
+    		M_nummul(1,Test_len + 1,memory_data_dk,0.5);
+
+
     		//user_data[1].data = &memory_row_tempInputPad[0];
     		//Matrix_gen(1,Test_len + 1,)
-    	    //for(i = 0; i < Test_len + 1 + KWinLen; i++){
-    	    for(i = 0; i < Test_len + 2; i++){
-    	    	output[i] = memory_data_ak[0][i];
+    	    for(i = 0; i < File_Test_len; i++){
+    	    	output[i] = memory_data_dk[0][i];
     	    }
     	}
     }

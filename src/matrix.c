@@ -1,67 +1,5 @@
 #include "../inc/matrix.h"
 
-//MATRIX_TYPE** GetMemory(int row, int col£¬)
-//{
-//	    MATRIX_TYPE ** data = NULL;
-//	    MATRIX_TYPE *row_memory[row];
-//	    int size = row * col;
-//	    MATRIX_TYPE row_col_memory[row][col];
-//	    row_memory[0] = &row_col_memory[row][0]
-//	    for(int i = 0; i < row; i++){
-//	    	row_memory[i] = &row_col_memory[i * col];
-//	    }
-//	    data = &row_memory[0];
-//	    return data;
-//}
-/*Generate Zeros _matrix*/
-//Matrix* M_Zeros(int row, int column) {
-//	Matrix temp_get;
-//    Matrix* Zero_mat = &temp_get;
-//    int ii,jj;
-//    Zero_mat->column = column;
-//    Zero_mat->row = row;
-//    MATRIX_TYPE** ppp = GetMemory(row,column);
-//    //GET_MEMORY(ppp, row, column);
-////    GetMemory(row,column);
-//
-//    for (ii = 0; ii <row; ii++) {
-//        for(jj = 0; jj < column; jj++){
-//           ppp[ii][jj] = 0;
-//        }
-//    }
-//    Zero_mat->data = ppp;
-//    return Zero_mat;
-//}
-
-//MATRIX_TYPE** GetMemory(int row, int col){
-////#ifdef NO_SYNTH
-////    MATRIX_TYPE ** data = NULL;
-////    data = (MATRIX_TYPE **)malloc(sizeof(MATRIX_TYPE*) * row);
-////    for(int i = 0; i < row; i++){
-////        data[i] = (MATRIX_TYPE*)malloc(sizeof(MATRIX_TYPE) * col);
-////    }
-////#else
-////    MATRIX_TYPE ** data = NULL;
-////    MATRIX_TYPE *row_memory[row];
-////    int size = row * col;
-////    MATRIX_TYPE row_col_memory[row * col];
-////    for(int i = 0; i < row; i++){
-////    	row_memory[i] = &row_col_memory[i * col];
-////    }
-////    data = &row_memory[0];
-////#endif
-////    return data;
-////	double **a = NULL;
-////	double *b[row];
-////	double c[row * col];
-////	for(int i = 0 ; i < row; i++)
-////	{
-////		b[i] = &c[i * col];
-////	}
-////	a = &b[0];
-////	return a;
-//}
-/* Generate Matrix Struct */
 void Matrix_gen(int row, int column, MATRIX_TYPE data[row * column], Matrix *_mat,MATRIX_TYPE **memory){
 //    Matrix* _mat = (Matrix*)malloc(sizeof(Matrix));
 //    if (_mat == NULL) return 0;
@@ -74,6 +12,34 @@ void Matrix_gen(int row, int column, MATRIX_TYPE data[row * column], Matrix *_ma
         }
     }
 }
+void M_Transition(int _row,int _col,MATRIX_TYPE (*src)[_col], MATRIX_TYPE (*des)[_col - 1]) {
+	int i,j;
+	for(i = 0; i < _row; i++){
+		for (j = 0; j < _col ; j++) {
+			des[i][j] = src[i][j + 1] - src[i][j];
+		}
+	}
+}
+
+/*Matrix Multiply*/
+void M_nummul(int _row, int _col,MATRIX_TYPE (*_mat)[_col],MATRIX_TYPE _num) {
+	int i,j;
+    for (i = 0; i < _row; i++) {
+        for(j = 0; j < _col; j++){
+        	_mat[i][j] = _mat[i][j] * _num;
+        }
+    }
+}
+/*Matrix sub*/
+void M_numsub(int _row, int _col,MATRIX_TYPE (*_mat)[_col], MATRIX_TYPE _num) {
+    int i, j;
+    for (i = 0; i < _row; i++) {
+        for(j = 0; j < _col; j++){
+            _mat[i][j] = _mat[i][j] - _num;
+        }
+    }
+}
+
 #if 0
 /*Full*/
 Matrix* M_full(Matrix* _mat, int row_up, int row_down, int column_left, int column_right, MATRIX_TYPE full_data) {

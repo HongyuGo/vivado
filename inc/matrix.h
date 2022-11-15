@@ -26,11 +26,15 @@ typedef struct _Elementary_Transformation {
     struct _Elementary_Transformation *next_E_trans;
 } Etrans_struct;
 
-MATRIX_TYPE** GetMemory(int row, int col);
 /* Generate Matrix Struct */
 //void Matrix_gen(int row, int column, MATRIX_TYPE data[10], Matrix _mat[0]);
 void Matrix_gen(int row, int column, MATRIX_TYPE data[10], Matrix _mat[0],MATRIX_TYPE *memory[1]);
-/* Copy Mtrix(gen new one)*/
+
+void M_Transition(int _row,int _col,MATRIX_TYPE (*src)[_col], MATRIX_TYPE (*des)[_col - 1]);
+void M_nummul(int _row, int _col,MATRIX_TYPE (*_mat)[_col],MATRIX_TYPE _num);
+void M_numsub(int _row, int _col,MATRIX_TYPE (*_mat)[_col], MATRIX_TYPE _num);
+
+#if 0
 Matrix* Matrix_copy(Matrix* _mat_sourse);
 /* Free Memory*/
 int M_free(Matrix* _mat);
@@ -63,4 +67,6 @@ Matrix *M_mul(Matrix *_mat_left, Matrix *_mat_right);
 /*Transpose*/
 Matrix *M_T(Matrix *_mat_source); 
 Matrix *M_limit(Matrix *_mat);
+#endif
+
 #endif
