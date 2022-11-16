@@ -4,7 +4,7 @@ int main(){
 	FILE *fp;
 	fp = fopen("./result.txt","w");
 
-	MATRIX_TYPE cha[Test_len] = {1,0,1,1,1,1,0,0,1,0};
+	MATRIX_TYPE cha[Test_len] = {1,0,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,1,1};
 	MATRIX_TYPE out[Test_len + 10];
 	op(cha,out);
 	for(i = 0; i < File_Test_len; i++){
@@ -23,7 +23,7 @@ int main(){
 		retval += abs(bench_out[i] - out[i]);
 	}
 //	retval = system("diff --brief -w result.dat result.golden.dat");
-	if(retval != 0){
+	if(retval > 0.000001){
 		printf("Test failed !!!!\n");
 		retval = 1;
 	}else{

@@ -1,5 +1,12 @@
 #include "../inc/op.h"
+#define lamda (0.405)
+#define NA (0.65)
+#define t0 (0.86 * (lamda) / (NA))
 #define KWinLen 1
+#define TL (0.102)
+#define T (1)
+#define S ((t0) / (TL))
+
 void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10])
 {
 	int i;
@@ -33,6 +40,7 @@ void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10])
     			codewords[0][i] = tempInputPad[0][i];
     		}
     		int codedlen = Test_len + 1;
+    		int codedBitsLength = codedlen - 1;
 
     		MATRIX_TYPE ak[1][2 + Test_len];
     		for(i = 0; i < KWinLen; i++){
@@ -49,11 +57,16 @@ void op(MATRIX_TYPE ChannelBits[Test_len], MATRIX_TYPE output[Test_len + 10])
     		M_Transition(1,Test_len + 1,ak,dk);
     		M_nummul(1,Test_len + 1,dk,0.5);
 
-
+    		MATRIX_TYPE rk[1][Test_len + 2];
+    		LOOP_read:for(i = 0; i < codedBitsLength + 1 + KWinLen; i++){
+    			MATRIX_TYPE jitter = sigma_jitter;
+    			MATRIX_TYPE stdpos_d = (i + 1) * T;
+    			rk[0][i] = readback(Test_len + 1,stdpos_d, jitter, dk, S, T, TL);
+    		}
     		//user_data[1].data = &memory_row_tempInputPad[0];
     		//Matrix_gen(1,Test_len + 1,)
     	    for(i = 0; i < File_Test_len; i++){
-    	    	output[i] = dk[0][i];
+    	    	output[i] = rk[0][i];
     	    }
     	}
     }

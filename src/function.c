@@ -1,19 +1,19 @@
 #include "../inc/function.h"
 
-#if 0
+
 double h_response(double t, double TLL, double SS) { return erf(t / SS / TLL); }
 
-double readback(double t, double jitter, Matrix* d, double SS, double TT, double TLL) {
-    int len = d->column;
+double readback(int _col,double t, double jitter, MATRIX_TYPE (*d)[_col], double SS, double TT, double TLL) {
+    int len = _col;
     double rs = 0;
     double tmp = 0;
-    for (int i = 0; i < len; i++) {
-        tmp = d->data[0][i] * h_response(t - (i + 1) * TT + jitter, TLL, SS);
+    LOOP:erf:for (int i = 0; i < len; i++) {
+        tmp = d[0][i] * h_response(t - (i + 1) * TT + jitter, TLL, SS);
         rs = rs + tmp;
     }
     return rs;
 }
-
+#if 0
 Matrix** gen_firtaps_v2(Matrix *random, Matrix *sampled, MATRIX_TYPE* gpr_coeff_data, int fir_len, char constraint,char method){
     int gpr_len = 5;
     // int i,j;
